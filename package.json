@@ -13,14 +13,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/applyft-web/ui-components.git"
+    "url": "git+https://github.com/applyft-web/utils.git"
   },
   "author": "Aliaksei Drabushau",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/applyft-web/ui-components/issues"
+    "url": "https://github.com/applyft-web/utils/issues"
   },
-  "homepage": "https://github.com/applyft-web/ui-components#readme",
+  "homepage": "https://github.com/applyft-web/utils#readme",
   "scripts": {
     "build": "rollup -c",
     "package-publish": "npm publish"
