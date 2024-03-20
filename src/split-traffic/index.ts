@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 
-function printLogs(...args: any[]) {
+const printLogs = (text: string, data: any) => {
   if (!['stage', 'development', 'dev'].includes(process.env.REACT_APP_ENV)) return;
-  console.log(...args);
+  console.log(text, data);
 }
 
 const useConf = () => {

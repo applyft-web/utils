@@ -3,7 +3,7 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/applyft-web"
   },
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "basic utilities for each onboarding project",
   "main": "dist/esm/index.js",
   "module": "dist/cjs/index.js",
