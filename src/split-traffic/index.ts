@@ -7,7 +7,7 @@ interface ConfProps {
 }
 
 const printLogs = (...args: any[]) => {
-  // if (!['stage', 'development', 'dev'].includes(process.env.REACT_APP_ENV)) return;
+  if (!['stage', 'development', 'dev'].includes(process.env.REACT_APP_ENV)) return;
   console.log(...args);
 }
 
@@ -28,11 +28,11 @@ const useConf = () => {
         return response.json();
       })
       .then((data) => {
-        printLogs('conf: ', data);
+        console.log('conf: ', data);
         setConf(data);
       })
       .catch((error) => {
-        printLogs('Unable to load the config file', error);
+        console.log('Unable to load the config file', error);
         setConf({});
       })
   }, []);
@@ -69,8 +69,8 @@ export const useLandingType = (landingParam: string, landingTypesList: string[])
         );
       });
 
-      printLogs('random value :', randomVal);
-      printLogs('result type: ', lt || `landing type does not exist. set default value: ${defaultValue}`);
+      console.log('random value :', randomVal);
+      console.log('result type: ', lt || `landing type does not exist. set default value: ${defaultValue}`);
 
       if (lt) {
         setLandingType(`split_${lt}`);
