@@ -1,12 +1,18 @@
 import { useState, useEffect } from 'react';
 
-const printLogs = (text: string, data: any) => {
+interface ConfProps {
+  [key: string]: {
+    [key: string]: number;
+  };
+}
+
+const printLogs = (...args: any[]) => {
   if (!['stage', 'development', 'dev'].includes(process.env.REACT_APP_ENV)) return;
-  console.log(text, data);
+  console.log(...args);
 }
 
 const useConf = () => {
-  const [conf, setConf] = useState(null);
+  const [conf, setConf] = useState<null | ConfProps>(null);
 
   useEffect(() => {
     fetch('./config.json')
@@ -36,16 +42,16 @@ const useConf = () => {
 
 export const useLandingType = (landingParam: string, landingTypesList: string[]) => {
   const defaultValue = landingParam.length ? landingParam : 'fullPrice';
-  const [landingType, setLandingType] = useState(null);
-  const [paywallType, setPaywallType] = useState(null);
+  const [landingType, setLandingType] = useState<null | string>(null);
+  const [paywallType, setPaywallType] = useState<null | string>(null);
   const conf = useConf();
 
-  const getLimits = (arr: string[]) =>
-    arr.reduce((arr, v) => {
-      const prevMax = (arr[arr.length - 1] || [{ max: null }]).max;
+  const getLimits = (arr: number[]) =>
+    arr.reduce<{ min: number, max: number }[]>((arr, v) => {
+      const prevMax = (arr[arr.length - 1] || { max: null }).max;
       const min = (prevMax || -1) + 1;
       const max = +v + (prevMax || 0);
-      return [].concat(arr, [{ min, max }]);
+      return arr.concat([{ min, max }]);
     }, []);
 
   useEffect(() => {
@@ -77,7 +83,7 @@ export const useLandingType = (landingParam: string, landingTypesList: string[])
       setLandingType(defaultValue);
       setPaywallType(defaultValue);
     }
-  }, [defaultValue, conf]);
+  }, [defaultValue, conf, landingTypesList]);
 
-  return { landingType, paywallType };
+  return {landingType, paywallType};
 };
