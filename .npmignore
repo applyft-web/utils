@@ -1,0 +1,10 @@
+/src
+/node_modules
+/.idea
+package-lock.json
+rollup.config.js
+.editorconfig
+.eslintignore
+.eslintrc.js
+.gitignore
+tsconfig.json
