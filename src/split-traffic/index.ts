@@ -7,7 +7,7 @@ interface ConfProps {
 }
 
 const printLogs = (...args: any[]) => {
-  if (!['stage', 'development', 'dev'].includes(process.env.REACT_APP_ENV)) return;
+  // if (!['stage', 'development', 'dev'].includes(process.env.REACT_APP_ENV)) return;
   console.log(...args);
 }
 
