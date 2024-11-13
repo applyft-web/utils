@@ -15,7 +15,7 @@ export const queryParser = (str: string): {[key: string]: string} => {
   return coupleStr.reduce((acc, [key, value]) => {
     return {
       ...acc,
-      [decodeURIComponent(key).replace(/[ +]/g,'_')]: decodeURIComponent(value),
+      [safeDecode(key).replace(/[ +]/g,'_')]: safeDecode(value),
     };
   }, {});
 };
