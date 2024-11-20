@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { queryParser } from '../utils';
 
 interface ConfProps {
   [key: string]: {
@@ -41,6 +42,9 @@ const useConf = () => {
 };
 
 export const useLandingType = (landingParam: string, landingTypesList: string[]) => {
+  const { skip_split } = queryParser(window.location.search);
+  if (skip_split === 'true') return { landingType: landingParam, paywallType: landingParam };
+
   const defaultValue = landingParam.length ? landingParam : 'fullPrice';
   const [landingType, setLandingType] = useState<null | string>(null);
   const [paywallType, setPaywallType] = useState<null | string>(null);
