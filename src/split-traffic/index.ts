@@ -42,7 +42,10 @@ const useConf = () => {
 };
 
 export const useLandingType = (landingParam: string, landingTypesList: string[]) => {
+  console.log('search: ', window.location.search);
+  console.log('landingParam: ',landingParam);
   const { skip_split } = queryParser(window.location.search);
+  console.log('skip_split: ', skip_split);
   if (skip_split === 'true') return { landingType: landingParam, paywallType: landingParam };
 
   const defaultValue = landingParam.length ? landingParam : 'fullPrice';
