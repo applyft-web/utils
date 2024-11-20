@@ -42,17 +42,14 @@ const useConf = () => {
 };
 
 export const useLandingType = (landingParam: string, landingTypesList: string[]) => {
-  console.log('search: ', window.location.search);
-  console.log('landingParam: ',landingParam);
+  const defaultValue = landingParam.length > 0 ? landingParam : 'fullPrice';
   const { skip_split } = queryParser(window.location.search);
-  console.log('skip_split: ', skip_split);
+
   if (skip_split === 'true') return { landingType: landingParam, paywallType: landingParam };
 
-  const defaultValue = landingParam.length ? landingParam : 'fullPrice';
   const [landingType, setLandingType] = useState<null | string>(null);
   const [paywallType, setPaywallType] = useState<null | string>(null);
   const conf = useConf();
-
   const getLimits = (arr: number[]) =>
     arr.reduce<{ min: number, max: number }[]>((arr, v) => {
       const prevMax = (arr[arr.length - 1] || { max: null }).max;
