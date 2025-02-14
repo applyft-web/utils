@@ -44,12 +44,10 @@ const useConf = () => {
 export const useLandingType = (landingParam: string, landingTypesList: string[]) => {
   const defaultValue = landingParam.length > 0 ? landingParam : 'fullPrice';
   const { skip_split } = queryParser(window.location.search);
-
-  if (skip_split === 'true') return { landingType: defaultValue, paywallType: defaultValue };
-
-  const [landingType, setLandingType] = useState<null | string>(null);
-  const [paywallType, setPaywallType] = useState<null | string>(null);
+  const [landingType, setLandingType] = useState<string>('');
+  const [paywallType, setPaywallType] = useState<string>('');
   const conf = useConf();
+  
   const getLimits = (arr: number[]) =>
     arr.reduce<{ min: number, max: number }[]>((arr, v) => {
       const prevMax = (arr[arr.length - 1] || { max: null }).max;
@@ -67,18 +65,25 @@ export const useLandingType = (landingParam: string, landingTypesList: string[])
       const lt = Object.keys(splittingLanding).find((k, i) => {
         const { min, max } = limits[i];
         return (
-          landingTypesList.includes(`/${k}`) &&
+          landingTypesList.includes(`/${k.split('/')[0]}`) &&
           randomVal >= min &&
           randomVal <= max
         );
       });
+      const [pt, postfix] = (lt || '').split('/');
+      const ltRes = `${pt}${postfix ? `_${postfix}` : ''}`;
 
       printLogs('random value :', randomVal);
-      printLogs('result type: ', lt || `landing type does not exist. set default value: ${defaultValue}`);
+      if (lt) {
+        printLogs('result type: ', ltRes);
+        printLogs('paywall type: ', pt);
+      } else {
+        printLogs('result type: ', `landing type does not exist. set default value: ${defaultValue}`);
+      }
 
       if (lt) {
-        setLandingType(`split_${lt}`);
-        setPaywallType(lt);
+        setLandingType(`split_${ltRes}`);
+        setPaywallType(pt);
       } else {
         setLandingType(defaultValue);
         setPaywallType(defaultValue);
@@ -89,5 +94,7 @@ export const useLandingType = (landingParam: string, landingTypesList: string[])
     }
   }, [defaultValue, conf, landingTypesList]);
 
-  return {landingType, paywallType};
+  if (skip_split === 'true') return { landingType: defaultValue, paywallType: defaultValue };
+
+  return { landingType, paywallType };
 };
