@@ -3,11 +3,11 @@ import { useConf, printLogs } from '../utils';
 
 export const useFlow = (flowType: string, flowsList: Record<string, string[]>) => {
   const [flow, setFlow] = useState<string[]>();
-  const [customFlow, setCustomFlow] = useState<string[]>();
+  const [customFlow, setCustomFlow] = useState<any>();
   const conf = useConf('flows');
 
   useEffect(() => {
-    if (!conf || typeof conf === 'object') return;
+    if (!conf) return;
     setCustomFlow(conf[flowType]);
   }, [conf, flowType]);
 

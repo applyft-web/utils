@@ -18,7 +18,7 @@ export const useLandingType = (landingParam: string, landingTypesList: string[],
     }, []);
 
   useEffect(() => {
-    if (!conf || typeof conf !== 'object') return;
+    if (!conf) return;
     if (conf[defaultValue]) {
       const randomVal = Math.round(Math.random() * 100);
       const splittingLanding = conf[defaultValue];
