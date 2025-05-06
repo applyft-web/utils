@@ -18,8 +18,8 @@ export const useLandingType = (landingParam: string, landingTypesList: string[],
     }, []);
 
   useEffect(() => {
-    if (!conf) return;
-    if (conf[defaultValue]) {
+    if (conf === undefined) return;
+    if (conf?.[defaultValue]) {
       const randomVal = Math.round(Math.random() * 100);
       const splittingLanding = conf[defaultValue];
       const limits = getLimits(Object.values(splittingLanding));
@@ -45,12 +45,12 @@ export const useLandingType = (landingParam: string, landingTypesList: string[],
           setLandingType(`split_${ltRes}`);
           setPaywallType(ltExist ? pt : defaultValue);
           setFlowType(pt);
+        } else {
+          printLogs(`result type: landing type «${lt}» does not exist. set default value: ${defaultValue}`);
+          setLandingType(defaultValue);
+          setPaywallType(defaultValue);
+          setFlowType(defaultValue);
         }
-      } else {
-        printLogs(`result type: landing type «${lt}» does not exist. set default value: ${defaultValue}`);
-        setLandingType(defaultValue);
-        setPaywallType(defaultValue);
-        setFlowType(defaultValue);
       }
     } else {
       setLandingType(defaultValue);

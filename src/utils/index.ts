@@ -30,7 +30,7 @@ export const printLogs = (...args: any[]) => {
 };
 
 export const useConf = (name: string) => {
-  const [conf, setConf] = useState<null | ConfProps<Record<string, number> | string[]>>(null);
+  const [conf, setConf] = useState<ConfProps<Record<string, number> | string[]> | null>();
   
   useEffect(() => {
     fetch(`./${name}.json`)
@@ -50,8 +50,8 @@ export const useConf = (name: string) => {
         setConf(data);
       })
       .catch((error) => {
-        printLogs('Unable to load the config file', error);
-        setConf({});
+        printLogs(`Unable to load the «${name}» config file`, error);
+        setConf(null);
       })
   }, [name]);
   

@@ -2,23 +2,18 @@ import { useState, useEffect } from 'react';
 import { useConf, printLogs } from '../utils';
 
 export const useFlow = (flowType: string, flowsList: Record<string, string[]>) => {
-  const [flow, setFlow] = useState<string[]>();
-  const [customFlow, setCustomFlow] = useState<any>();
+  const [flow, setFlow] = useState<any>();
   const conf = useConf('flows');
-
-  useEffect(() => {
-    if (!conf) return;
-    setCustomFlow(conf[flowType]);
-  }, [conf, flowType]);
 
   useEffect(() => {
     if (!flowType) return;
     const localFlow = flowsList[flowType];
+    const customFlow = conf?.[flowType];
     setFlow(customFlow ?? localFlow);
-    if (!customFlow && !localFlow) {
+    if (conf !== undefined && !customFlow && !localFlow) {
       printLogs(`result flow «${flowType}» does not exist. set default default flow`);
     }
-  }, [customFlow, flowType, flowsList]);
+  }, [conf, flowType, flowsList]);
 
   return flow;
 };
