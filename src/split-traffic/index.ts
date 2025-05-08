@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { queryParser, useConf, printLogs } from '../utils';
 
-export const useLandingType = (landingParam: string, landingTypesList: string[], defaultFlowName = 'fullPrice') => {
+export const useLandingType = (landingParam: string, landingTypesList?: string[], defaultFlowName = 'fullPrice') => {
   const defaultValue = landingParam.length > 0 ? landingParam : defaultFlowName;
   const { skip_split } = queryParser(window.location.search);
   const [landingType, setLandingType] = useState<string>('');
@@ -27,7 +27,7 @@ export const useLandingType = (landingParam: string, landingTypesList: string[],
         const { min, max } = limits[i];
         return (randomVal >= min && randomVal <= max);
       });
-      const ltExist = !!lt && landingTypesList.includes(`${defaultFlowName === 'fullPrice' ? '/' : ''}${lt.split('/')[0]}`);
+      const ltExist = !!lt && landingTypesList?.includes(`/${lt.split('/')[0]}`);
 
       printLogs('random value :', randomVal);
 
@@ -36,7 +36,7 @@ export const useLandingType = (landingParam: string, landingTypesList: string[],
         const ltRes = `split_${ft}${postfix ? `_${postfix}` : ''}`;
         const ptRes = ltExist ? ft : defaultValue;
 
-        if (!ltExist) printLogs(`result type: landing type «${ft}» does not exist. but will be used as custom type`);
+        if (landingTypesList && !ltExist) printLogs(`result type: landing type «${ft}» does not exist. but will be used as custom type`);
         printLogs('landing type: ', ltRes);
         printLogs('paywall type: ', ptRes);
         printLogs('flow type: ', ft);
@@ -62,6 +62,6 @@ export const useLandingType = (landingParam: string, landingTypesList: string[],
   return { landingType, paywallType, flowType };
 };
 
-export const useLandingTypeV2 = (landingParam: string, landingTypesList: string[]) => {
+export const useLandingTypeV2 = (landingParam: string, landingTypesList?: string[]) => {
   return useLandingType(landingParam, landingTypesList, 'default');
 };
