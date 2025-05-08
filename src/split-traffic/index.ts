@@ -32,18 +32,18 @@ export const useLandingType = (landingParam: string, landingTypesList: string[],
       printLogs('random value :', randomVal);
 
       if (lt) {
-        const [pt, postfix] = lt.split('/');
-        const ltRes = `${pt}${postfix ? `_${postfix}` : ''}`;
-        if (!ltExist) {
-          printLogs(`result type: landing type «${pt}» does not exist. but will be used as custom type`);
-        }
-        printLogs('result type: ', ltRes);
-        printLogs('paywall type: ', ltExist ? pt : defaultValue);
-        printLogs('flow type: ', pt);
+        const [ft, postfix] = lt.split('/');
+        const ltRes = `split_${ft}${postfix ? `_${postfix}` : ''}`;
+        const ptRes = ltExist ? ft : defaultValue;
 
-        setLandingType(`split_${ltRes}`);
-        setPaywallType(ltExist ? pt : defaultValue);
-        setFlowType(pt);
+        if (!ltExist) printLogs(`result type: landing type «${ft}» does not exist. but will be used as custom type`);
+        printLogs('landing type: ', ltRes);
+        printLogs('paywall type: ', ptRes);
+        printLogs('flow type: ', ft);
+
+        setLandingType(ltRes);
+        setPaywallType(ptRes);
+        setFlowType(ft);
       } else {
         printLogs('Oops... Something went wrong. Please check the config file.');
         setLandingType(defaultValue);
