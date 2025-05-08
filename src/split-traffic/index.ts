@@ -27,7 +27,7 @@ export const useLandingType = (landingParam: string, landingTypesList: string[],
         const { min, max } = limits[i];
         return (randomVal >= min && randomVal <= max);
       });
-      const ltExist = !!lt && landingTypesList.includes(lt.split('/')[0]);
+      const ltExist = !!lt && landingTypesList.includes(`${defaultFlowName === 'fullPrice' ? '/' : ''}${lt.split('/')[0]}`);
 
       printLogs('random value :', randomVal);
 
