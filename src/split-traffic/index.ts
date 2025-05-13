@@ -34,7 +34,7 @@ export const useLandingType = (landingParam: string, landingTypesList?: string[]
       if (lt) {
         const [ft, postfix] = lt.split('/');
         const ltRes = `split_${ft}${postfix ? `_${postfix}` : ''}`;
-        const ptRes = ltExist ? ft : defaultValue;
+        const ptRes = landingTypesList && !ltExist ? defaultValue : ft;
 
         if (landingTypesList && !ltExist) printLogs(`result type: landing type «${ft}» does not exist. but will be used as custom type`);
         printLogs('landing type: ', ltRes);
