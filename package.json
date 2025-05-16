@@ -3,7 +3,7 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/applyft-web"
   },
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "basic utilities and parsers for react",
   "main": "dist/esm/index.js",
   "module": "dist/cjs/index.js",
@@ -42,12 +42,12 @@
     "rollup": "^4.40.2",
     "rollup-plugin-dts": "^6.1.0",
     "rollup-plugin-preserve-shebang": "^1.0.1",
-    "ts-node": "^10.9.2",
     "tslib": "^2.6.2",
     "typescript": "^5.8.3",
     "yargs": "^17.7.2"
   },
   "dependencies": {
+    "ts-node": "^10.9.2",
     "react": ">=17"
   },
   "bin": {

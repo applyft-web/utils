@@ -1,4 +1,12 @@
-#!/usr/bin/env node
+require('ts-node').register({
+  transpileOnly: true,
+  compilerOptions: {
+    jsx: 'react',
+    module: 'commonjs',
+    esModuleInterop: true
+  },
+  extensions: ['.ts', '.tsx']
+});
 
 import { generateScreens } from './flows';
 import yargs from 'yargs';

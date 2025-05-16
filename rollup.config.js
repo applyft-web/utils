@@ -56,7 +56,7 @@ module.exports = [
     },
     external: id =>
       isExternal(id) ||
-      ['fs','path','yargs'].includes(id),
+      ['ts-node','yargs','fs','path'].includes(id),
     plugins: [
       shebang(),
       typescript({ tsconfig: './tsconfig.json' }),
