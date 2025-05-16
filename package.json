@@ -3,8 +3,8 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/applyft-web"
   },
-  "version": "2.2.4",
-  "description": "basic utilities for each onboarding project",
+  "version": "2.3.0",
+  "description": "basic utilities and parsers for react",
   "main": "dist/esm/index.js",
   "module": "dist/cjs/index.js",
   "types": "dist/index.d.ts",
@@ -28,8 +28,9 @@
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
-    "@types/node": "^20.11.30",
+    "@types/node": "^20.17.47",
     "@types/react": "^18.2.48",
+    "@types/yargs": "^17.0.33",
     "@typescript-eslint/eslint-plugin": "^6.19.1",
     "@typescript-eslint/parser": "^6.19.1",
     "eslint": "^8.56.0",
@@ -38,12 +39,18 @@
     "eslint-plugin-n": "^16.6.2",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.33.2",
-    "rollup": "^4.9.6",
+    "rollup": "^4.40.2",
     "rollup-plugin-dts": "^6.1.0",
+    "rollup-plugin-preserve-shebang": "^1.0.1",
+    "ts-node": "^10.9.2",
     "tslib": "^2.6.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.8.3",
+    "yargs": "^17.7.2"
   },
   "dependencies": {
     "react": ">=17"
+  },
+  "bin": {
+    "generate-screens": "dist/cli.js"
   }
 }
