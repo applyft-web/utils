@@ -17,3 +17,5 @@ export const useFlow = (flowType: string, flowsList: Record<string, string[]>) =
 
   return flow;
 };
+
+export * from './generate-screens';
