@@ -2,20 +2,8 @@ const packageJson = require('./package.json')
 const typescript = require('@rollup/plugin-typescript')
 const terser = require('@rollup/plugin-terser')
 const dts = require('rollup-plugin-dts')
-const shebang = require('rollup-plugin-preserve-shebang');
-const { builtinModules } = require('module');
-
-const deps = Object.keys(packageJson.dependencies || {});
-function isExternal(id) {
-  return (
-    builtinModules.includes(id) ||
-    deps.includes(id) ||
-    /^react($|\/)/.test(id)
-  );
-}
 
 module.exports = [
-  // — library
   {
     input: 'src/index.ts',
     output: [
@@ -30,7 +18,7 @@ module.exports = [
         interop: 'compat',
       }
     ],
-    external: isExternal,
+    external: ['react'],
     plugins: [
       typescript({
         tsconfig: './tsconfig.json',
@@ -38,28 +26,9 @@ module.exports = [
       terser(),
     ]
   },
-
-  // — types
   {
     input: 'dist/esm/types/index.d.ts',
     output: [{ file: packageJson.types, format: 'esm' }],
-    plugins: [dts.default()],
-  },
-
-  // — CLI
-  {
-    input: 'src/cli.ts',
-    output: {
-      file: 'dist/cli.js',
-      format: 'cjs',
-      banner: '#!/usr/bin/env node',
-    },
-    external: id =>
-      isExternal(id) ||
-      ['ts-node','yargs','fs','path'].includes(id),
-    plugins: [
-      shebang(),
-      typescript({ tsconfig: './tsconfig.json' }),
-    ],
-  },
+    plugins: [dts.default()]
+  }
 ]
