@@ -8,7 +8,7 @@ require('ts-node').register({
   extensions: ['.ts', '.tsx']
 });
 
-import { generateScreens } from './flows';
+import { generateScreens } from './generate-screens';
 import yargs from 'yargs';
 
 const argv = yargs

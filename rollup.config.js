@@ -48,7 +48,7 @@ module.exports = [
 
   // — CLI
   {
-    input: 'src/cli.ts',
+    input: 'src/cli/index.ts',
     output: {
       file: 'dist/cli.js',
       format: 'cjs',
