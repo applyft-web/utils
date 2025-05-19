@@ -3,6 +3,7 @@
 /.idea
 package-lock.json
 rollup.config.js
+release.config.js
 .editorconfig
 .eslintignore
 .eslintrc.js
