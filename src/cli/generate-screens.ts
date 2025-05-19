@@ -10,9 +10,9 @@ export function generateScreens(configRelPath: string, outRelPath: string): void
 
   try {
     fs.writeFileSync(outPath, JSON.stringify(screens, null, 2), 'utf-8');
-    console.log(`✅ Сгенерировано ${screens.length} экранов: ${outPath}`);
+    console.log(`✅ screens.json was generated (${screens.length} screen${screens.length > 1 ? 's' : ''}): ${outPath}`);
   } catch (err) {
-    console.error('❌ Ошибка записи screens.json:', err);
+    console.error('❌ Failed to generate screens.json:', err);
     process.exit(1);
   }
 }
