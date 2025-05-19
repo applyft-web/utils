@@ -57,7 +57,13 @@ export const useLandingType = (landingParam: string, landingTypesList?: string[]
     }
   }, [defaultValue, conf, landingTypesList]);
 
-  if (skip_split === 'true') return { landingType: defaultValue, paywallType: defaultValue };
+  if (skip_split === 'true') {
+    return {
+      landingType: defaultValue,
+      paywallType: defaultValue,
+      flowType: defaultValue,
+    };
+  }
 
   return { landingType, paywallType, flowType };
 };
