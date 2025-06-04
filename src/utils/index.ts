@@ -41,7 +41,7 @@ export const useConf = (name: string) => {
           !contentType ||
           contentType.indexOf('application/json') === -1
         ) {
-          throw new Error('not a json');
+          throw new Error('not found');
         }
         return response.json();
       })
