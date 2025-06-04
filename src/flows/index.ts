@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useConf, printLogs } from '../utils';
 
-export const useFlow = (flowType: string, flowsList: Record<string, string[]>): string[] | null => {
+export const useFlow = (flowType: string, flowsList: Record<string, string[]>) => {
   const [flow, setFlow] = useState<any>();
   const conf = useConf('flows');
 
