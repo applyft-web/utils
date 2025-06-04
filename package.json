@@ -3,7 +3,7 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/applyft-web"
   },
-  "version": "2.5.3-dev.1",
+  "version": "2.5.3-dev.3",
   "description": "basic utilities and parsers for react",
   "main": "dist/esm/index.js",
   "module": "dist/cjs/index.js",
