@@ -7,7 +7,7 @@ module.exports = {
   repositoryUrl: 'https://github.com/applyft-web/utils.git',
   plugins: [
     '@semantic-release/commit-analyzer',
-    '@semantic-release/release-notes-generator',
+    // '@semantic-release/release-notes-generator',
     '@semantic-release/npm',
   ]
 }
