@@ -25,7 +25,7 @@ export const queryParser = (str: string): {[key: string]: string} => {
 export type ConfProps<T = any> = Record<string, T>;
 
 export const printLogs = (...args: any[]) => {
-  if (!['stage', 'development', 'dev'].includes(process.env.REACT_APP_ENV)) return;
+  if (!['stage', 'development', 'dev'].includes((process || import.meta).env.REACT_APP_ENV)) return;
   console.log(...args);
 };
 
