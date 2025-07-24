@@ -49,6 +49,7 @@
     "semantic-release": "^24.2.4",
     "tslib": "^2.6.2",
     "typescript": "^5.8.3",
+    "vite": "^7.0.6",
     "yargs": "^17.7.2"
   },
   "dependencies": {
