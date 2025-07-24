@@ -21,7 +21,7 @@
     "noEmit": true,
     "jsx": "react",
     "strictNullChecks": false,
-    "types": ["vite/client"]
+    "types": ["node", "vite/client"]
   },
   "exclude": [
     "node_modules"
