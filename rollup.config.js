@@ -11,7 +11,7 @@ function isExternal(id) {
     builtinModules.includes(id) ||
     deps.includes(id) ||
     /^react($|\/)/.test(id)
-  );
+  )
 }
 
 module.exports = [
@@ -22,20 +22,20 @@ module.exports = [
       {
         file: packageJson.module,
         format: 'cjs',
-        interop: 'compat',
+        interop: 'compat'
       },
       {
         file: packageJson.main,
         format: 'esm',
-        interop: 'compat',
+        interop: 'compat'
       }
     ],
     external: isExternal,
     plugins: [
       typescript({
-        tsconfig: './tsconfig.json',
+        tsconfig: './tsconfig.json'
       }),
-      terser(),
+      terser()
     ]
   },
 
@@ -43,7 +43,7 @@ module.exports = [
   {
     input: 'dist/esm/types/index.d.ts',
     output: [{ file: packageJson.types, format: 'esm' }],
-    plugins: [dts.default()],
+    plugins: [dts.default()]
   },
 
   // — CLI
@@ -56,10 +56,10 @@ module.exports = [
     },
     external: id =>
       isExternal(id) ||
-      ['ts-node','yargs','fs','path'].includes(id),
+      ['ts-node', 'yargs', 'fs', 'path'].includes(id),
     plugins: [
       shebang(),
-      typescript({ tsconfig: './tsconfig.json' }),
-    ],
-  },
+      typescript({ tsconfig: './tsconfig.json' })
+    ]
+  }
 ]
