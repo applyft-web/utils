@@ -25,9 +25,19 @@ export const queryParser = (str: string): {[key: string]: string} => {
 export type ConfProps<T = any> = Record<string, T>;
 
 export const printLogs = (...args: any[]) => {
-  if (!['stage', 'development', 'dev'].includes((process || import.meta).env.REACT_APP_ENV)) return;
+  const envCRA = typeof process !== 'undefined'
+    ? process.env.REACT_APP_ENV
+    : undefined;
+
+  const envVite = typeof import.meta !== 'undefined' && import.meta.env
+    ? (import.meta.env.VITE_ENV || import.meta.env.MODE)
+    : undefined;
+
+  const env = envCRA || envVite || process.env.NODE_ENV;
+  if (['production'].includes(env!)) return;
+
   console.log(...args);
-};
+}
 
 export const useConf = (name: string) => {
   const [conf, setConf] = useState<ConfProps<Record<string, number> | string[]> | null>();
