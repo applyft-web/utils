@@ -70,4 +70,5 @@ Parses a query string into an object.
 - `src/flows`: Manages flow configurations.
 
 ## <div align="center">Environment Variables</div>
-- `REACT_APP_ENV`: Specifies the environment (`stage`, `development`, `dev`).
+- `REACT_APP_ENV` or `VITE_ENV`: Specifies the environment (`production`, `stage`, `development`, `dev`).
+
