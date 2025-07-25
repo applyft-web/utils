@@ -5,13 +5,14 @@ const dts = require('rollup-plugin-dts')
 const shebang = require('rollup-plugin-preserve-shebang');
 const { builtinModules } = require('module');
 
-const deps = Object.keys(packageJson.dependencies || {});
+const deps = Object.keys(packageJson.dependencies || {})
+
 function isExternal(id) {
   return (
     builtinModules.includes(id) ||
     deps.includes(id) ||
     /^react($|\/)/.test(id)
-  );
+  )
 }
 
 module.exports = [
@@ -56,7 +57,7 @@ module.exports = [
     },
     external: id =>
       isExternal(id) ||
-      ['ts-node','yargs','fs','path'].includes(id),
+      ['ts-node', 'yargs', 'fs', 'path'].includes(id),
     plugins: [
       shebang(),
       typescript({ tsconfig: './tsconfig.json' }),
