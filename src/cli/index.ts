@@ -1,14 +1,21 @@
-require('ts-node').register({
-  transpileOnly: true,
-  compilerOptions: {
-    jsx: 'react',
-    module: 'commonjs',
-    esModuleInterop: true
-  },
-  extensions: ['.ts', '.tsx']
-})
+#!/usr/bin/env node
 
-import 'ts-node/esm';
+const isEsm = typeof import.meta !== 'undefined' && import.meta.url?.endsWith('.mjs')
+
+if (isEsm) {
+  await import('ts-node/esm')
+} else {
+  require('ts-node').register({
+    transpileOnly: true,
+    compilerOptions: {
+      jsx: 'react',
+      module: 'commonjs',
+      esModuleInterop: true
+    },
+    extensions: ['.ts', '.tsx']
+  })
+}
+
 import { generateScreens } from './generate-screens'
 import yargs from 'yargs/yargs'
 import { hideBin } from 'yargs/helpers'
