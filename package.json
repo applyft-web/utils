@@ -3,7 +3,7 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/applyft-web"
   },
-  "version": "2.5.7-dev.8",
+  "version": "2.5.7-dev.9",
   "description": "flow management & basic utilities for Applyft Web projects",
   "main": "dist/esm/index.js",
   "module": "dist/cjs/index.js",
@@ -11,11 +11,11 @@
   "exports": {
     ".": {
       "require": "./dist/index.js",
-      "import":  "./dist/index.mjs"
+      "import": "./dist/index.mjs"
     },
     "./cli": {
       "require": "./dist/cli.cjs.js",
-      "import":  "./dist/cli.mjs"
+      "import": "./dist/cli.mjs"
     }
   },
   "files": [
