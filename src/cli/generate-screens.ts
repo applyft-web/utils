@@ -5,8 +5,7 @@ export function generateScreens (configRelPath: string, outRelPath: string): voi
   const configPath = path.resolve(process.cwd(), configRelPath)
   const outPath = path.resolve(process.cwd(), outRelPath)
 
-  const mod = await import(configPath)
-  const pagesConfig = mod.pagesConfig || (mod.default && mod.default.pagesConfig)
+  const { pagesConfig } = require(configPath) as { pagesConfig: Record<string, any> }
   const screens = Object.keys(pagesConfig).filter(key => key !== '*')
 
   try {
