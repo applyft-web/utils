@@ -8,6 +8,7 @@ require('ts-node').register({
   extensions: ['.ts', '.tsx']
 })
 
+import 'ts-node/esm';
 import { generateScreens } from './generate-screens'
 import yargs from 'yargs/yargs'
 import { hideBin } from 'yargs/helpers'

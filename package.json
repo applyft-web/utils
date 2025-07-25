@@ -8,6 +8,16 @@
   "main": "dist/esm/index.js",
   "module": "dist/cjs/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import":  "./dist/index.mjs"
+    },
+    "./cli": {
+      "require": "./dist/cli.cjs.js",
+      "import":  "./dist/cli.mjs"
+    }
+  },
   "files": [
     "dist/**/*"
   ],
