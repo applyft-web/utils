@@ -22,12 +22,12 @@ module.exports = [
     output: [
       {
         file: packageJson.module,
-        format: 'cjs',
+        format: 'esm',
         interop: 'compat'
       },
       {
         file: packageJson.main,
-        format: 'esm',
+        format: 'cjs',
         interop: 'compat'
       }
     ],
@@ -52,7 +52,7 @@ module.exports = [
     input: 'src/cli/index.ts',
     external: id =>
       isExternal(id) ||
-      ['ts-node/esm', 'yargs', 'fs', 'path'].includes(id),
+      ['ts-node', 'yargs', 'fs', 'path'].includes(id),
     plugins: [
       shebang(),
       typescript({
