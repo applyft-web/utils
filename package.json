@@ -8,16 +8,6 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/cjs/index.js",
-      "import": "./dist/esm/index.js"
-    },
-    "./cli": {
-      "require": "./dist/cli.cjs.js",
-      "import": "./dist/cli.mjs"
-    }
-  },
   "files": [
     "dist/**/*"
   ],
@@ -67,6 +57,6 @@
     "yargs": "^18.0.0"
   },
   "bin": {
-    "generate-screens": "dist/cli.mjs"
+    "generate-screens": "dist/cli.js"
   }
 }

@@ -50,28 +50,17 @@ module.exports = [
   // — CLI
   {
     input: 'src/cli/index.ts',
+    output: {
+      file: 'dist/cli.js',
+      format: 'cjs',
+      banner: '#!/usr/bin/env node',
+    },
     external: id =>
       isExternal(id) ||
       ['ts-node', 'yargs', 'fs', 'path'].includes(id),
     plugins: [
       shebang(),
-      typescript({
-        tsconfig: './tsconfig.json',
-        module: 'ESNext'
-      })
-    ],
-    output: [
-      {
-        file: 'dist/cli.cjs.js',
-        format: 'cjs',
-        interop: 'auto',
-        banner: '#!/usr/bin/env node'
-      },
-      {
-        file: 'dist/cli.mjs',
-        format: 'esm',
-        banner: '#!/usr/bin/env node'
-      }
+      typescript({ tsconfig: './tsconfig.json' })
     ]
   }
 ]
