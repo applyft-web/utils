@@ -72,6 +72,6 @@ export const useLandingType = (landingParam: string, landingTypesList?: string[]
   return { landingType, paywallType, flowType }
 }
 
-export const useLandingTypeV2 = (landingParam: string, landingTypesList?: string[]) => {
-  return useLandingType(landingParam, landingTypesList, 'default')
+export const useLandingTypeV2 = (landingParam: string, debug?: boolean) => {
+  return useLandingType(landingParam, undefined, 'default', debug)
 }
