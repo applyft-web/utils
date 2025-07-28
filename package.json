@@ -3,10 +3,10 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/applyft-web"
   },
-  "version": "2.5.7-dev.1",
+  "version": "2.5.7-dev.18",
   "description": "flow management & basic utilities for Applyft Web projects",
-  "main": "dist/esm/index.js",
-  "module": "dist/cjs/index.js",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist/**/*"
@@ -31,6 +31,7 @@
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
+    "@semantic-release/git": "^10.0.1",
     "@semantic-release/npm": "^12.0.1",
     "@types/node": "^20.17.47",
     "@types/react": "^18.2.48",
