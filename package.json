@@ -26,13 +26,14 @@
     "prod-publish": "npm publish",
     "stage-publish": "npm publish --tag stage",
     "dev-publish": "npm publish --tag dev",
-    "release": "npm run build && semantic-release --config release.config.js",
-    "prerelease": "npm run build && semantic-release --config release.dev.config.js"
+    "release": "npm run build && semantic-release --extends ./release.main.config.js",
+    "pre-release": "npm run build && semantic-release --extends ./release.dev.config.js"
   },
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
     "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.4",
     "@semantic-release/npm": "^12.0.1",
     "@types/node": "^20.17.47",
     "@types/react": "^18.2.48",

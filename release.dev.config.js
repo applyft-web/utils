@@ -1,5 +1,6 @@
 module.exports = {
   branches: [
+    { name: 'main' },
     { name: 'dev', channel: 'dev', prerelease: 'dev', tagFormat: false },
     { name: 'stage', channel: 'stage', prerelease: 'stage', tagFormat: false }
   ],
