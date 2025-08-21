@@ -1,7 +1,5 @@
 module.exports = {
-  branches: [
-    { name: 'main' }
-  ],
+  branches: [{ name: 'main' }],
   repositoryUrl: 'https://github.com/applyft-web/utils.git',
   plugins: [
     '@semantic-release/commit-analyzer',
