@@ -10,7 +10,7 @@ export function generateScreens (configRelPath: string, outRelPath: string): voi
     (acc, [key, conf]) => {
       if (key !== '*' && !conf.excludeFromBuilder) {
         acc.screens.push(key)
-      } else {
+      } else if (key !== '*') {
         acc.excludedScreens.push(key)
       }
       return acc
@@ -22,7 +22,7 @@ export function generateScreens (configRelPath: string, outRelPath: string): voi
     fs.writeFileSync(outPath, JSON.stringify(screens, null, 2), 'utf-8')
     console.log(`✅ screens.json was generated (${screens.length} screen${screens.length > 1 ? 's' : ''}): ${outPath}`)
     if (excludedScreens?.length > 0) {
-      console.log(`Excluded screens (${excludedScreens.length}): ${excludedScreens.join(', ')}`)
+      console.log(`🔒 Excluded screens (${excludedScreens.length}): ${excludedScreens.join(', ')}`)
     }
   } catch (err) {
     console.error('❌ Failed to generate screens.json:', err)
