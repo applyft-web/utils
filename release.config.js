@@ -1,7 +1,7 @@
 module.exports = {
   branches: [
-    { name: 'dev', channel: 'dev', prerelease: 'dev' },
-    { name: 'stage', channel: 'stage', prerelease: 'stage' },
+    { name: 'dev', channel: 'dev', prerelease: 'dev', tagFormat: false },
+    { name: 'stage', channel: 'stage', prerelease: 'stage', tagFormat: false },
     { name: 'main' }
   ],
   repositoryUrl: 'https://github.com/applyft-web/utils.git',
