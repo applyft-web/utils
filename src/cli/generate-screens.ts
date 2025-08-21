@@ -6,7 +6,7 @@ export function generateScreens (configRelPath: string, outRelPath: string): voi
   const outPath = path.resolve(process.cwd(), outRelPath)
 
   const { pagesConfig } = require(configPath) as { pagesConfig: Record<string, any> }
-  const screens = Object.keys(pagesConfig).filter(key => key !== '*')
+  const screens = Object.keys(pagesConfig).filter(key => (key !== '*' || pagesConfig[key].excludeFromBuilder))
 
   try {
     fs.writeFileSync(outPath, JSON.stringify(screens, null, 2), 'utf-8')
