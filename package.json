@@ -3,7 +3,7 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/applyft-web"
   },
-  "version": "2.5.7-dev.18",
+  "version": "2.5.7-dev.19",
   "description": "flow management & basic utilities for Applyft Web projects",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
