@@ -20,7 +20,7 @@ export function generateScreens (configRelPath: string, outRelPath: string): voi
 
   try {
     fs.writeFileSync(outPath, JSON.stringify(screens, null, 2), 'utf-8')
-    console.log(`✅ screens.json was generated (${screens.length} screen${screens.length > 1 ? 's' : ''}): ${outPath}`)
+    console.log(`✅ screens.json has been generated: ${screens.length} screen${screens.length > 1 ? 's' : ''}`)
     if (excludedScreens?.length > 0) {
       console.log(`🔒 Excluded screens (${excludedScreens.length}): ${excludedScreens.join(', ')}`)
     }
