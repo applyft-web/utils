@@ -29,7 +29,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Pre-Release (dev)
+        if: ${{ github.ref_name == 'dev' || github.ref_name == 'stage' }}
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run prerelease
+
       - name: Release
+        if: ${{ github.ref_name == 'main' }}
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
