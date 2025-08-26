@@ -29,7 +29,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Pre-Release (dev)
+        if: ${{ github.ref_name == 'dev' || github.ref_name == 'stage' }}
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run pre-release
+
       - name: Release
+        if: ${{ github.ref_name == 'main' }}
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -39,5 +47,7 @@ jobs:
         if: success()
         run: |
           git fetch --tags && \
-          git tag -l "*-dev.*" "*-stage.*" | \
-          xargs -n1 -I{} bash -c 'git push origin --delete "{}" || true; git tag -d "{}" || true'
+          for p in dev stage; do \
+            git tag -l "*-$p.*" | sort -V | head -n -1 | \
+              xargs -r -n1 -I{} sh -c 'git push origin --delete "{}" && git tag -d "{}"'; \
+          done

@@ -68,6 +68,3 @@ Parses a query string into an object.
 - `src/split-traffic`: Contains logic for traffic splitting.
 - `src/utils`: Includes utility functions and hooks.
 - `src/flows`: Manages flow configurations.
-
-## <div align="center">Environment Variables</div>
-- `REACT_APP_ENV`: Specifies the environment (`stage`, `development`, `dev`).
