@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { queryParser, useConf, printLogs } from '../utils'
+import { queryParser, printLogs } from '../utils'
+import { useConf } from '../hooks'
 
 export const useLandingType = (landingParam: string, landingTypesList?: string[], defaultFlowName = 'fullPrice', debug = false) => {
   const defaultValue = landingParam.length > 0 ? landingParam : defaultFlowName
@@ -33,7 +34,7 @@ export const useLandingType = (landingParam: string, landingTypesList?: string[]
       })
       const ltExist = !!lt && landingTypesList?.includes(`/${lt.split('/')[0]}`)
 
-      printLogs('random value :', randomVal)
+      printLogs('random value :', randomVal.toString())
 
       if (lt) {
         const [ft, postfix] = lt.split('/')
@@ -65,7 +66,7 @@ export const useLandingType = (landingParam: string, landingTypesList?: string[]
     return {
       landingType: defaultValue,
       paywallType: defaultValue,
-      flowType: defaultValue,
+      flowType: defaultValue
     }
   }
 
