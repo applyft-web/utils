@@ -2,9 +2,21 @@ import { useState, useEffect } from 'react'
 import { queryParser, printLogs } from '../utils'
 import { useConf } from '../hooks'
 
+const checkUTMs = (params: Record<string, string>): boolean => {
+  if (!params) return false
+  const utms = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content']
+  return Object
+    .entries(utms)
+    .some(([utm, val]) =>
+      utm.includes('utm') &&
+      (val.includes('{') || val.includes('}'))
+    )
+}
+
 export const useLandingType = (landingParam: string, landingTypesList?: string[], defaultFlowName = 'fullPrice', debug = false) => {
   const defaultValue = landingParam.length > 0 ? landingParam : defaultFlowName
-  const { skip_split } = queryParser(window.location.search)
+  const searchParams = queryParser(window.location.search)
+  console.log({ searchParams })
   const [landingType, setLandingType] = useState<string>('')
   const [paywallType, setPaywallType] = useState<string>('')
   const [flowType, setFlowType] = useState<string>('')
@@ -62,7 +74,8 @@ export const useLandingType = (landingParam: string, landingTypesList?: string[]
     }
   }, [defaultValue, conf, landingTypesList])
 
-  if (skip_split === 'true') {
+  if (!searchParams || checkUTMs(searchParams) || searchParams.skip_split === 'true') {
+    console.log('set to default: ', { searchParams })
     return {
       landingType: defaultValue,
       paywallType: defaultValue,
