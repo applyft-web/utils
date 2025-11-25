@@ -3,8 +3,8 @@ import { printLogs } from 'utils'
 
 export type ConfProps<T = any> = Record<string, T>
 
-export const useConf = (name: string) => {
-  const [conf, setConf] = useState<ConfProps<Record<string, number> | string[]> | null>();
+export const useConf = (name: string, debug: boolean = false) => {
+  const [conf, setConf] = useState<ConfProps<Record<string, number> | string[]> | null>()
 
   useEffect(() => {
     fetch(`./${name}.json`)
@@ -20,11 +20,11 @@ export const useConf = (name: string) => {
         return response.json()
       })
       .then((data) => {
-        printLogs(`${name}: `, data)
+        if (debug) printLogs(`${name}: `, data)
         setConf(data)
       })
       .catch((error) => {
-        printLogs(`Unable to load the «${name}» config file`, error)
+        if (debug) printLogs(`Unable to load the «${name}» config file`, error)
         setConf(null)
       })
   }, [name])
