@@ -24,6 +24,9 @@ const checkUTMs = (params: Record<string, string> | null | undefined): boolean =
   )
 }
 
+// Ukraine, Belarus, Cyprus, Poland
+const restrictGeos = ['UA', 'BY', 'CY', 'PL']
+
 /** @deprecated use useSplitFlow instead */
 export const useLandingType = (landingParam: string, landingTypesList?: string[], defaultFlowName = 'fullPrice', debug = false): Record<string, string> => {
   const defaultValue = landingParam.length > 0 ? landingParam : defaultFlowName
@@ -31,7 +34,7 @@ export const useLandingType = (landingParam: string, landingTypesList?: string[]
   const [landingType, setLandingType] = useState<string>('')
   const [paywallType, setPaywallType] = useState<string>('')
   const [flowType, setFlowType] = useState<string>('')
-  const conf = useConf('config', debug)
+  const { conf, geo } = useConf('config', debug)
 
   const getLimits = (arr: number[]): Limits =>
     arr.reduce((acc: Limits, v: number) => {
@@ -83,8 +86,7 @@ export const useLandingType = (landingParam: string, landingTypesList?: string[]
     }
   }, [defaultValue, conf, landingTypesList])
 
-  if (!checkUTMs(searchParams) || searchParams?.skip_split === 'true') {
-    console.log('set to default: ', { searchParams })
+  if (!checkUTMs(searchParams) || (geo && restrictGeos.includes(geo)) || searchParams?.skip_split === 'true') {
     return {
       landingType: defaultValue,
       paywallType: defaultValue,
