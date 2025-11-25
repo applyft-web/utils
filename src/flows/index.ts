@@ -1,11 +1,16 @@
 import { useState, useEffect } from 'react'
 import { useConf } from '../hooks'
 
+interface Options {
+  debug?: boolean
+}
+
 export const useFlow = (
   flowType: string,
   flowsList: Record<string, string[]>,
-  debug = false
+  options?: Options
 ): string[] | null | undefined => {
+  const debug = options?.debug ?? false
   const [flow, setFlow] = useState<string[] | null | undefined>()
   const { conf } = useConf<string[]>('flows', debug)
 

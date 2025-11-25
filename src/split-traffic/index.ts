@@ -9,6 +9,7 @@ interface ReturnType {
 }
 interface Options {
   debug?: boolean
+  customGeo?: string
 }
 
 const PLACEHOLDER_RE = /\{\{[^}]*\}\}/
@@ -34,17 +35,26 @@ const checkUTMs = (params: Record<string, string> | null | undefined): boolean =
 // Ukraine, Belarus, Cyprus, Poland
 const restrictGeos = ['UA', 'BY', 'CY', 'PL']
 const DEFAULT_NAME = 'default'
+const defaultOptions = {
+  debug: false,
+  customGeo: 'US'
+}
 
 const useLandingType = (
   initValue: string = DEFAULT_NAME,
-  { debug = false }: Options
+  options: Options = defaultOptions
 ): ReturnType => {
   const defaultValue = initValue.length > 0 ? initValue : DEFAULT_NAME
+  const { debug, customGeo } = options
   const searchParams = queryParser(window.location.search)
   const [landingType, setLandingType] = useState<string>(defaultValue)
   const [flowType, setFlowType] = useState<string>(defaultValue)
   const { conf, geo } = useConf<Record<string, number>>('config', debug)
-  const skip = !checkUTMs(searchParams) || (geo && restrictGeos.includes(geo)) || searchParams?.skip_split === 'true'
+  const skip =
+    !checkUTMs(searchParams) ||
+    (geo && restrictGeos.includes(geo)) ||
+    (customGeo && restrictGeos.includes(customGeo)) ||
+    searchParams?.skip_split === 'true'
 
   const getLimits = (arr: number[]): Limits =>
     arr.reduce((acc: Limits, v: number) => {
@@ -100,7 +110,7 @@ const useLandingType = (
 }
 
 /** @deprecated use useSplitFlow instead */
-export const useLandingTypeV2 = (initValue: string, debug?: boolean): ReturnType => {
+export const useLandingTypeV2 = (initValue: string, debug: boolean = false): ReturnType => {
   return useLandingType(initValue, { debug })
 }
 
