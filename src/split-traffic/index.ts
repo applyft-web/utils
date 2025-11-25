@@ -42,7 +42,7 @@ export const useLandingType = (landingParam: string, landingTypesList?: string[]
     }, [])
 
   useEffect(() => {
-    if (conf === undefined || Array.isArray(conf[defaultValue])) return
+    if (conf === undefined || Array.isArray(conf?.[defaultValue])) return
     if (conf?.[defaultValue]) {
       const randomVal = Math.floor(Math.random() * 100)
       const splittingLanding = conf[defaultValue]
