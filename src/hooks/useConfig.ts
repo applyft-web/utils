@@ -1,40 +1,51 @@
 import { useState, useEffect } from 'react'
-import { printLogs } from 'utils'
 
-export type ConfProps<T = any> = Record<string, T>
+export type ConfProps<K> = Record<string, K>
 
-export const useConf = (name: string, debug: boolean = false) => {
-  const [conf, setConf] = useState<ConfProps<Record<string, number> | string[]> | null>()
+export const useConf = <T = string[] | Record<string, number>>(name: string, debug: boolean = false): {
+  conf: ConfProps<T> | null | undefined
+  geo: string | null
+} => {
+  const [conf, setConf] = useState<ConfProps<T> | null | undefined>()
   const [geo, setGeo] = useState<string | null>(null)
 
   useEffect(() => {
-    fetch(`./${name}.json`)
-      .then((response) => {
-        if (!response.ok) throw new Error('failed to load')
+    const handleError = (error: unknown): void => {
+      if (debug) console.warn(`Unable to load the «${name}» config file`, error)
+      setConf(null)
+    }
+
+    const loadConfig = async (): Promise<void> => {
+      try {
+        const response = await fetch(`./${name}.json`)
+
+        if (!response.ok) {
+          handleError(new Error('failed to load'))
+          return
+        }
 
         const contentType = response.headers.get('content-type')
         const countryCode = response.headers.get('X-Country-Code')
 
-        if (
-          !contentType ||
-          !contentType.includes('application/json')
-        ) {
-          throw new Error('not found')
+        if (!contentType || !contentType.includes('application/json')) {
+          handleError(new Error('not found'))
+          return
         }
 
         if (countryCode) setGeo(countryCode)
 
-        return response.json()
-      })
-      .then((data) => {
-        if (debug) printLogs(`${name}: `, data)
+        const data = (await response.json()) as ConfProps<T>
+
+        if (debug) console.log(`${name}: `, data)
         setConf(data)
-      })
-      .catch((error) => {
-        if (debug) printLogs(`Unable to load the «${name}» config file`, error)
+      } catch (error) {
+        if (debug) console.warn(`Unable to load the «${name}» config file`, error)
         setConf(null)
-      })
-  }, [name])
+      }
+    }
+
+    void loadConfig()
+  }, [name, debug])
 
   return { conf, geo }
 }

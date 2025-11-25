@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { queryParser, printLogs } from '../utils'
+import { queryParser } from '../utils'
 import { useConf } from '../hooks'
 
 type Limits = Array<{ min: number, max: number }>
@@ -27,82 +27,70 @@ const checkUTMs = (params: Record<string, string> | null | undefined): boolean =
 // Ukraine, Belarus, Cyprus, Poland
 const restrictGeos = ['UA', 'BY', 'CY', 'PL']
 
-/** @deprecated use useSplitFlow instead */
-export const useLandingType = (landingParam: string, landingTypesList?: string[], defaultFlowName = 'fullPrice', debug = false): Record<string, string> => {
-  const defaultValue = landingParam.length > 0 ? landingParam : defaultFlowName
+const useLandingType = (initValue: string = 'default', debug: boolean = false): Record<string, string> => {
   const searchParams = queryParser(window.location.search)
-  const [landingType, setLandingType] = useState<string>('')
-  const [paywallType, setPaywallType] = useState<string>('')
-  const [flowType, setFlowType] = useState<string>('')
-  const { conf, geo } = useConf('config', debug)
+  const [landingType, setLandingType] = useState<string>(initValue)
+  const [flowType, setFlowType] = useState<string>(initValue)
+  const { conf, geo } = useConf<Record<string, number>>('config', debug)
 
   const getLimits = (arr: number[]): Limits =>
     arr.reduce((acc: Limits, v: number) => {
-      const prevMax = (acc[acc.length - 1] || { max: null }).max
-      const min = (prevMax || -1) + 1
-      const max = +v + (prevMax || 0)
+      const prevMax = (acc[acc.length - 1] || { max: -1 }).max
+      const min = prevMax + 1
+      const max = prevMax + v
       return acc.concat([{ min, max }])
     }, [])
 
   useEffect(() => {
-    if (conf === undefined || Array.isArray(conf?.[defaultValue])) return
-    if (conf?.[defaultValue]) {
+    if (conf === undefined || Array.isArray(conf?.[initValue])) return
+    if (conf?.[initValue]) {
       const randomVal = Math.floor(Math.random() * 100)
-      const splittingLanding = conf[defaultValue]
+      const splittingLanding = conf[initValue]
       const limits = getLimits(Object.values(splittingLanding))
       const lt = Object.keys(splittingLanding).find((k, i) => {
         const { min, max } = limits[i]
         return (randomVal >= min && randomVal <= max)
       })
-      const ltExist = !!lt && landingTypesList?.includes(`/${lt.split('/')[0]}`)
 
-      if (debug) printLogs('random value :', randomVal.toString())
+      if (debug) console.log('random value :', randomVal.toString())
 
       if (lt) {
         const [ft, postfix] = lt.split('/')
         const ltRes = `split_${ft}${postfix ? `_${postfix}` : ''}`
-        const ptRes = landingTypesList && !ltExist ? defaultValue : ft
 
         if (debug) {
-          if (landingTypesList && !ltExist) printLogs(`result type: landing type «${ft}» does not exist. but will be used as custom type`)
-          printLogs('landing type: ', ltRes)
-          printLogs('paywall type: ', ptRes)
-          printLogs('flow type: ', ft)
+          console.log('landing type: ', ltRes)
+          console.log('flow type: ', ft)
         }
 
         setLandingType(ltRes)
-        setPaywallType(ptRes)
         setFlowType(ft)
       } else {
-        if (debug) printLogs('Oops... Something went wrong. Please check the config file.')
-        setLandingType(defaultValue)
-        setPaywallType(defaultValue)
-        setFlowType(defaultValue)
+        if (debug) console.warn('Oops... Something went wrong. Please check the config file.')
+        setLandingType(initValue)
+        setFlowType(initValue)
       }
     } else {
-      setLandingType(defaultValue)
-      setPaywallType(defaultValue)
-      setFlowType(defaultValue)
+      setLandingType(initValue)
+      setFlowType(initValue)
     }
-  }, [defaultValue, conf, landingTypesList])
+  }, [initValue, conf, debug])
 
   if (!checkUTMs(searchParams) || (geo && restrictGeos.includes(geo)) || searchParams?.skip_split === 'true') {
     return {
-      landingType: defaultValue,
-      paywallType: defaultValue,
-      flowType: defaultValue
+      landingType: initValue,
+      flowType: initValue
     }
   }
 
-  return { landingType, paywallType, flowType }
+  return { landingType, flowType }
 }
 
 /** @deprecated use useSplitFlow instead */
-export const useLandingTypeV2 = (landingParam: string, debug?: boolean): Record<string, string> => {
-  return useLandingType(landingParam, undefined, 'default', debug)
+export const useLandingTypeV2 = (initValue: string, debug?: boolean): Record<string, string> => {
+  return useLandingType(initValue, debug)
 }
 
-export const useSplitFlow = (landingParam: string, debug?: boolean): Record<string, string> => {
-  const { landingType, flowType } = useLandingType(landingParam, undefined, 'default', debug)
-  return { landingType, flowType }
+export const useSplitFlow = (initValue: string, debug?: boolean): Record<string, string> => {
+  return useLandingType(initValue, debug)
 }
