@@ -3,6 +3,13 @@ import { queryParser } from '../utils'
 import { useConf } from '../hooks'
 
 type Limits = Array<{ min: number, max: number }>
+interface ReturnType {
+  landingType: string
+  flowType: string
+}
+interface Options {
+  debug?: boolean
+}
 
 const PLACEHOLDER_RE = /\{\{[^}]*\}\}/
 
@@ -26,12 +33,18 @@ const checkUTMs = (params: Record<string, string> | null | undefined): boolean =
 
 // Ukraine, Belarus, Cyprus, Poland
 const restrictGeos = ['UA', 'BY', 'CY', 'PL']
+const DEFAULT_NAME = 'default'
 
-const useLandingType = (initValue: string = 'default', debug: boolean = false): Record<string, string> => {
+const useLandingType = (
+  initValue: string = DEFAULT_NAME,
+  { debug = false }: Options
+): ReturnType => {
+  const defaultValue = initValue.length > 0 ? initValue : DEFAULT_NAME
   const searchParams = queryParser(window.location.search)
-  const [landingType, setLandingType] = useState<string>(initValue)
-  const [flowType, setFlowType] = useState<string>(initValue)
+  const [landingType, setLandingType] = useState<string>(defaultValue)
+  const [flowType, setFlowType] = useState<string>(defaultValue)
   const { conf, geo } = useConf<Record<string, number>>('config', debug)
+  const skip = !checkUTMs(searchParams) || (geo && restrictGeos.includes(geo)) || searchParams?.skip_split === 'true'
 
   const getLimits = (arr: number[]): Limits =>
     arr.reduce((acc: Limits, v: number) => {
@@ -42,10 +55,10 @@ const useLandingType = (initValue: string = 'default', debug: boolean = false): 
     }, [])
 
   useEffect(() => {
-    if (conf === undefined || Array.isArray(conf?.[initValue])) return
-    if (conf?.[initValue]) {
+    if (skip || conf === undefined || Array.isArray(conf?.[defaultValue])) return
+    if (conf?.[defaultValue]) {
       const randomVal = Math.floor(Math.random() * 100)
-      const splittingLanding = conf[initValue]
+      const splittingLanding = conf[defaultValue]
       const limits = getLimits(Object.values(splittingLanding))
       const lt = Object.keys(splittingLanding).find((k, i) => {
         const { min, max } = limits[i]
@@ -67,19 +80,19 @@ const useLandingType = (initValue: string = 'default', debug: boolean = false): 
         setFlowType(ft)
       } else {
         if (debug) console.warn('Oops... Something went wrong. Please check the config file.')
-        setLandingType(initValue)
-        setFlowType(initValue)
+        setLandingType(defaultValue)
+        setFlowType(defaultValue)
       }
     } else {
-      setLandingType(initValue)
-      setFlowType(initValue)
+      setLandingType(defaultValue)
+      setFlowType(defaultValue)
     }
-  }, [initValue, conf, debug])
+  }, [skip, defaultValue, conf, debug])
 
-  if (!checkUTMs(searchParams) || (geo && restrictGeos.includes(geo)) || searchParams?.skip_split === 'true') {
+  if (skip) {
     return {
-      landingType: initValue,
-      flowType: initValue
+      landingType: defaultValue,
+      flowType: defaultValue
     }
   }
 
@@ -87,10 +100,10 @@ const useLandingType = (initValue: string = 'default', debug: boolean = false): 
 }
 
 /** @deprecated use useSplitFlow instead */
-export const useLandingTypeV2 = (initValue: string, debug?: boolean): Record<string, string> => {
-  return useLandingType(initValue, debug)
+export const useLandingTypeV2 = (initValue: string, debug?: boolean): ReturnType => {
+  return useLandingType(initValue, { debug })
 }
 
-export const useSplitFlow = (initValue: string, debug?: boolean): Record<string, string> => {
-  return useLandingType(initValue, debug)
+export const useSplitFlow = (initValue: string, options?: Options): ReturnType => {
+  return useLandingType(initValue, options)
 }
