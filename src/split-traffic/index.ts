@@ -83,7 +83,7 @@ export const useLandingType = (landingParam: string, landingTypesList?: string[]
     }
   }, [defaultValue, conf, landingTypesList])
 
-  if (checkUTMs(searchParams) || searchParams?.skip_split === 'true') {
+  if (!checkUTMs(searchParams) || searchParams?.skip_split === 'true') {
     console.log('set to default: ', { searchParams })
     return {
       landingType: defaultValue,

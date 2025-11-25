@@ -9,6 +9,7 @@ export const useConf = (name: string, debug: boolean = false) => {
   useEffect(() => {
     fetch(`./${name}.json`)
       .then((response) => {
+        console.log({ response })
         if (!response.ok) throw new Error('failed to load')
         const contentType = response.headers.get('content-type')
         if (
