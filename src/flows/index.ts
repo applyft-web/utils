@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useConf } from '../hooks'
 
+// TODO:
+// type ReturnType = string[] | null | undefined
+type ReturnType = any
+
 interface Options {
   debug?: boolean
 }
@@ -9,9 +13,9 @@ export const useFlow = (
   flowType: string,
   flowsList: Record<string, string[]>,
   options?: Options
-): string[] | null | undefined => {
+): ReturnType => {
   const debug = options?.debug ?? false
-  const [flow, setFlow] = useState<string[] | null | undefined>()
+  const [flow, setFlow] = useState<ReturnType>()
   const { conf } = useConf<string[]>('flows', debug)
 
   useEffect(() => {
