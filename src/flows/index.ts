@@ -9,8 +9,13 @@ export const useFlow = (flowType: string, flowsList: Record<string, string[]>) =
   useEffect(() => {
     if (!flowType || conf === undefined) return
     const localFlow = flowsList[flowType]
-    const customFlow = conf?.[flowType]
-    setFlow(customFlow ?? localFlow ?? null)
+    const localDefFlow = flowsList.default
+    const customFlow =
+      conf && Array.isArray(conf[flowType]) ? conf[flowType] : undefined
+    const defaultFlow =
+      conf && Array.isArray(conf.default) ? conf.default : localDefFlow
+
+    setFlow(customFlow ?? localFlow ?? defaultFlow ?? null)
     if (!customFlow && !localFlow) {
       printLogs(`result flow «${flowType}» does not exist. set default default flow`)
     }
