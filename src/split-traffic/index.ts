@@ -47,8 +47,8 @@ const useLandingType = (
   const defaultValue = initValue.length > 0 ? initValue : DEFAULT_NAME
   const { debug, customGeo } = options
   const searchParams = queryParser(window.location.search)
-  const [landingType, setLandingType] = useState<string>(defaultValue)
-  const [flowType, setFlowType] = useState<string>(defaultValue)
+  const [landingType, setLandingType] = useState<string>('')
+  const [flowType, setFlowType] = useState<string>('')
   const { conf, geo } = useConf<Record<string, number>>('config', debug)
   const skip =
     !checkUTMs(searchParams) ||
