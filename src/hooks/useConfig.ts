@@ -25,14 +25,17 @@ export const useConf = <T = string[] | Record<string, number>>(name: string, deb
         }
 
         const contentType = response.headers.get('content-type')
-        const countryCode = response.headers.get('X-Country-Code')
+        const countryCode =
+          response.headers.get('x-viewer-country') ||
+          response.headers.get('X-Country-Code') ||
+          null
 
         if (!contentType || !contentType.includes('application/json')) {
           handleError(new Error('not found'))
           return
         }
 
-        if (countryCode) setGeo(countryCode)
+        if (countryCode) setGeo(countryCode.trim().toUpperCase())
 
         const data = (await response.json()) as ConfProps<T>
 
