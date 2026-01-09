@@ -50,11 +50,11 @@ const useLandingType = (
   const [landingType, setLandingType] = useState<string>('')
   const [flowType, setFlowType] = useState<string>('')
   const { conf, geo } = useConf<Record<string, number>>('config', debug)
-  const skip =
+  const redirectToDefault =
     !checkUTMs(searchParams) ||
     (geo && restrictGeos.includes(geo)) ||
-    (customGeo && restrictGeos.includes(customGeo)) ||
-    searchParams?.skip_split === 'true'
+    (customGeo && restrictGeos.includes(customGeo))
+  const skip = redirectToDefault || searchParams?.skip_split === 'true'
 
   const getLimits = (arr: number[]): Limits =>
     arr.reduce((acc: Limits, v: number) => {
@@ -101,8 +101,8 @@ const useLandingType = (
 
   if (skip) {
     return {
-      landingType: defaultValue,
-      flowType: defaultValue
+      landingType: redirectToDefault ? DEFAULT_NAME : defaultValue,
+      flowType: redirectToDefault ? DEFAULT_NAME : defaultValue
     }
   }
 
