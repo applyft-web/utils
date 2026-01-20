@@ -8,12 +8,15 @@ require('ts-node').register({
   extensions: ['.ts', '.tsx']
 })
 
-import { generateScreens } from './generate-screens'
+import { hideBin } from 'yargs/helpers'
 import yargs from 'yargs'
+import { generateScreens } from './generate-screens'
 
-const argv = yargs
-  .option('config', { alias: 'c', demandOption: true, describe: 'path to pagesConfig.tsx' })
-  .option('out', { alias: 'o', demandOption: true, describe: 'root of project for screens.json' })
-  .argv as { config: string, out: string }
+const argv = yargs(hideBin(process.argv))
+  .option('config', { alias: 'c', demandOption: true, describe: 'path to config module or object exporting pagesConfig' })
+  .option('out', { alias: 'o', demandOption: true, describe: 'output directory (default screens.json) or .json file path' })
+  .strict()
+  .help()
+  .parseSync() as { config: string, out: string }
 
 generateScreens(argv.config, argv.out)
