@@ -1,5 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
+import { createRequire } from 'module'
+import { pathToFileURL } from 'url'
 
 type PagesConfig = Record<string, { excludeFromBuilder?: boolean }>
 
@@ -10,12 +12,78 @@ let pagesConfig: PagesConfig | undefined
 const isPlainObject = (v: unknown): v is Record<string, unknown> =>
   Boolean(v) && typeof v === 'object' && !Array.isArray(v)
 
-export function generateScreens (configRelPath: string, outRelPath: string): void {
+function tryRegisterTsconfigPaths (): void {
+  try {
+    const tsconfigPath = path.resolve(process.cwd(), 'tsconfig.json')
+    if (!fs.existsSync(tsconfigPath)) return
+
+    const raw = fs.readFileSync(tsconfigPath, 'utf-8')
+    const cfg = JSON.parse(raw)
+    const compilerOptions = cfg?.compilerOptions || {}
+    const baseUrlRel: unknown = compilerOptions.baseUrl
+    const paths: unknown = compilerOptions.paths
+
+    if (typeof baseUrlRel === 'string' && paths && typeof paths === 'object') {
+      // optional dependency — best-effort
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const tsconfigPaths = require('tsconfig-paths')
+        const baseUrl = path.resolve(path.dirname(tsconfigPath), baseUrlRel)
+        tsconfigPaths.register({ baseUrl, paths })
+      } catch (_) {
+        // ignore if not installed
+      }
+    }
+  } catch (_) {
+    // silent — best-effort only
+  }
+}
+
+async function loadConfigModule (configPath: string): Promise<unknown> {
+  const ext = path.extname(configPath).toLowerCase()
+
+  if (ext === '.json') {
+    try {
+      const data = fs.readFileSync(configPath, 'utf-8')
+      return JSON.parse(data)
+    } catch (e) {
+      throw new Error(`Failed to read JSON config: ${String(e)}`)
+    }
+  }
+
+  // First, try CommonJS require (works with ts-node for TS files in CJS projects)
+  try {
+    const req = createRequire(process.cwd() + '/package.json')
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    return req(configPath)
+  } catch (e: any) {
+    const msg = e?.message || ''
+    const code = e?.code || ''
+    const isEsm = code === 'ERR_REQUIRE_ESM' || /must use import/i.test(msg)
+    if (!isEsm) {
+      // not an ESM-specific error — rethrow
+      throw e
+    }
+  }
+
+  // Fallback: dynamic import for ESM modules
+  try {
+    const mod = await import(pathToFileURL(configPath).href)
+    return mod
+  } catch (e) {
+    throw e
+  }
+}
+
+export async function generateScreens (configRelPath: string, outRelPath: string): Promise<void> {
   const configPath = path.resolve(process.cwd(), configRelPath)
   const outPath = path.resolve(process.cwd(), outRelPath)
 
   try {
-    const rawMod = require(configPath)
+    // Best-effort support for TS path aliases before loading
+    tryRegisterTsconfigPaths()
+
+    const rawMod = await loadConfigModule(configPath)
     const candidates: unknown[] = [
       rawMod?.pagesConfig,
       rawMod?.default?.pagesConfig,

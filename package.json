@@ -60,6 +60,7 @@
     "ts-node": "^10.9.2"
   },
   "bin": {
-    "generate-screens": "dist/cli.js"
+    "generate-screens": "dist/cli.cjs.js",
+    "generate-screens-vite": "dist/cli-vite.cjs.js"
   }
 }
