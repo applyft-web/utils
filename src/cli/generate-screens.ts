@@ -63,17 +63,20 @@ export function generateScreens (configRelPath: string, outRelPath: string): voi
 
   let outFile = outPath
   try {
-    const exists = fs.existsSync(outPath)
-    const stat = exists ? fs.statSync(outPath) : null
-    const endsWithSlash = /[\\/]+$/.test(outRelPath)
-    const hasExt = Boolean(path.extname(outPath))
-    const isJsonExt = path.extname(outPath).toLowerCase() === '.json'
+    const hasExt = Boolean(path.extname(outRelPath))
+    const ext = path.extname(outRelPath).toLowerCase()
 
-    if (stat?.isDirectory() || (!exists && (endsWithSlash || !hasExt))) {
-      outFile = path.join(outPath, DEFAULT_RESULT_FILE)
-    } else {
+    if (hasExt) {
+      if (ext !== '.json') {
+        console.error(
+          `❌ Output file must have .json extension: "${outRelPath}"`
+        )
+        process.exit(1)
+      }
+
       outFile = outPath
-      if (!isJsonExt) outFile = `${outFile}.json`
+    } else {
+      outFile = path.join(outPath, DEFAULT_RESULT_FILE)
     }
   } catch (_) {
     outFile = path.join(outPath, DEFAULT_RESULT_FILE)
