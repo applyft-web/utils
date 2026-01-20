@@ -58,7 +58,7 @@ module.exports = [
     },
     external: id =>
       isExternal(id) ||
-      ['ts-node', 'fs', 'path'].includes(id),
+      ['ts-node', 'yargs', 'fs', 'path'].includes(id),
     plugins: [
       shebang(),
       nodeResolve({ preferBuiltins: true }),
