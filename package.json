@@ -30,6 +30,7 @@
     "pre-release": "npm run build && semantic-release --extends ./release.dev.config.js"
   },
   "devDependencies": {
+    "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
     "@semantic-release/git": "^10.0.1",
