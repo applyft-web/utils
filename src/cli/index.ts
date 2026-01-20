@@ -17,6 +17,6 @@ const argv = yargs(hideBin(process.argv))
   .option('out', { alias: 'o', demandOption: true, describe: 'output directory (default screens.json) or .json file path' })
   .strict()
   .help()
-  .parseSync() as { config: string, out: string }
+  .parse() as { config: string, out: string }
 
 generateScreens(argv.config, argv.out)
