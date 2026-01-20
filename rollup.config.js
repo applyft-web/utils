@@ -1,6 +1,7 @@
 const packageJson = require('./package.json')
 const typescript = require('@rollup/plugin-typescript')
 const terser = require('@rollup/plugin-terser')
+const nodeResolve = require('@rollup/plugin-node-resolve')
 const dts = require('rollup-plugin-dts')
 const shebang = require('rollup-plugin-preserve-shebang')
 const { builtinModules } = require('module')
@@ -53,13 +54,14 @@ module.exports = [
     output: {
       file: 'dist/cli.js',
       format: 'cjs',
-      banner: '#!/usr/bin/env node',
+      banner: '#!/usr/bin/env node'
     },
     external: id =>
       isExternal(id) ||
       ['ts-node', 'yargs', 'fs', 'path'].includes(id),
     plugins: [
       shebang(),
+      nodeResolve({ preferBuiltins: true }),
       typescript({ tsconfig: './tsconfig.json' })
     ]
   }
