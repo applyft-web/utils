@@ -10,7 +10,7 @@ require('ts-node').register({
 
 import { hideBin } from 'yargs/helpers'
 import yargs from 'yargs'
-import { generateScreens } from './generate-screens'
+import { generateScreens } from './generate-screens-esm'
 
 const argv = yargs(hideBin(process.argv))
   .scriptName('generate-screens-vite')
@@ -18,19 +18,15 @@ const argv = yargs(hideBin(process.argv))
   .option('config', {
     alias: 'c',
     demandOption: true,
-    describe: 'путь к конфигу страниц (.ts/.js/.mjs) или JSON в Vite‑проекте; алиасы из tsconfig будут применены автоматически (если доступен tsconfig-paths)'
+    describe: 'path to config module or object exporting pagesConfig'
   })
   .option('out', {
     alias: 'o',
     demandOption: true,
-    describe: 'папка назначения (по умолчанию screens.json) или путь к .json файлу'
+    describe: 'output directory (default screens.json) or .json file path'
   })
   .strict()
   .help()
   .parse() as { config: string, out: string }
 
-Promise.resolve(generateScreens(argv.config, argv.out))
-  .catch((e) => {
-    console.error('❌ Generation failed:', e)
-    process.exit(1)
-  })
+generateScreens(argv.config, argv.out)

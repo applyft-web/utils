@@ -16,18 +16,18 @@ This project is built using **TypeScript**, **React**, and **npm**. It provides 
 Two CLI commands are available to generate screens list from a pages config:
 
 - `generate-screens` — universal Node CLI (supports JSON/CJS/ESM/TS configs). Works in Node projects out of the box.
-- `generate-screens-vite` — same behavior, tailored for Vite projects. TS path aliases from `tsconfig.json` are applied on a best‑effort basis if `tsconfig-paths` is installed.
+- `generate-screens-esm` — same behavior, tailored for Vite projects. TS path aliases from `tsconfig.json` are applied on a best‑effort basis if `tsconfig-paths` is installed.
 
 Examples:
 
 ```
 # TS/ESM/CJS config module
 npx @applyft-web/utils generate-screens -c src/pages.config.ts -o public/screens.json
-npx @applyft-web/utils generate-screens-vite -c src/pages.config.ts -o public/screens.json
+npx @applyft-web/utils generate-screens-esm -c src/pages.config.ts -o public/screens.json
 
 # JSON config
 npx @applyft-web/utils generate-screens -c pages.config.json -o public
-npx @applyft-web/utils generate-screens-vite -c pages.config.json -o public
+npx @applyft-web/utils generate-screens-esm -c pages.config.json -o public
 ```
 
 ### <u>Hooks</u>
