@@ -51,19 +51,31 @@ module.exports = [
   // — CLI (CJS)
   {
     input: 'src/cli/index.ts',
-    output: [
-      {
-        file: 'dist/cli.cjs.js',
-        format: 'cjs',
-        banner: '#!/usr/bin/env node',
-        interop: 'compat'
-      },
-      {
-        file: 'dist/cli.esm.js',
-        format: 'esm',
-        banner: '#!/usr/bin/env node',
-        interop: 'compat'
-      }],
+    output: {
+      file: 'dist/cli.cjs.js',
+      format: 'cjs',
+      banner: '#!/usr/bin/env node',
+      interop: 'compat'
+    },
+    external: id =>
+      isExternal(id) ||
+      ['ts-node', 'yargs', 'fs', 'path'].includes(id),
+    plugins: [
+      shebang(),
+      nodeResolve({ preferBuiltins: true }),
+      typescript({ tsconfig: './tsconfig.json' })
+    ]
+  },
+
+  // — CLI (ESM)
+  {
+    input: 'src/cli/index.esm.ts',
+    output: {
+      file: 'dist/cli.esm.js',
+      format: 'esm',
+      banner: '#!/usr/bin/env node',
+      interop: 'compat'
+    },
     external: id =>
       isExternal(id) ||
       ['ts-node', 'yargs', 'fs', 'path'].includes(id),

@@ -61,6 +61,6 @@
   },
   "bin": {
     "generate-screens": "dist/cli.cjs.js",
-    "generate-screens-vite": "dist/cli.esm.js"
+    "generate-screens-esm": "dist/cli.esm.js"
   }
 }
