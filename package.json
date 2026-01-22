@@ -60,7 +60,6 @@
     "ts-node": "^10.9.2"
   },
   "bin": {
-    "generate-screens": "dist/cli.cjs.js",
-    "generate-screens-esm": "dist/cli.esm.js"
+    "generate-screens": "dist/cli.js"
   }
 }
