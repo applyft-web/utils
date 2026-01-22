@@ -2,14 +2,25 @@ import { useState, useEffect } from 'react'
 
 export type ConfProps<K> = Record<string, K>
 
-export const useConf = <T = string[] | Record<string, number>>(name: string, debug: boolean = false): {
+interface Options {
+  debug?: boolean
+  skip?: boolean
+}
+
+export const useConf = <T = string[] | Record<string, number>>(name: string, options: Options = { debug: false }): {
   conf: ConfProps<T> | null | undefined
   geo: string | null
 } => {
+  const { debug, skip } = options
   const [conf, setConf] = useState<ConfProps<T> | null | undefined>()
   const [geo, setGeo] = useState<string | null>(null)
 
   useEffect(() => {
+    if (skip) {
+      setConf(null)
+      return
+    }
+
     const handleError = (error: unknown): void => {
       if (debug) console.warn(`Unable to load the «${name}» config file`, error)
       setConf(null)
@@ -48,7 +59,7 @@ export const useConf = <T = string[] | Record<string, number>>(name: string, deb
     }
 
     void loadConfig()
-  }, [name, debug])
+  }, [skip, name, debug])
 
   return { conf, geo }
 }

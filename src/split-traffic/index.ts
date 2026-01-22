@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { queryParser } from '../utils'
+import { checkUTMs, queryParser } from '../utils'
 import { useConf } from '../hooks'
 
 type Limits = Array<{ min: number, max: number }>
@@ -12,32 +12,11 @@ interface Options {
   customGeo?: string
 }
 
-const PLACEHOLDER_RE = /\{\{[^}]*\}\}/
-
-const checkUTMs = (params: Record<string, string> | null | undefined): boolean => {
-  if (!params || typeof params !== 'object' || Object.keys(params).length === 0) {
-    return false
-  }
-
-  const utmEntries = Object.entries(params).filter(([key]) =>
-    key.toLowerCase().includes('utm')
-  )
-
-  if (utmEntries.length === 0) return false
-
-  return utmEntries.every(([, value]) =>
-    typeof value === 'string' &&
-    value.trim().length > 0 &&
-    !PLACEHOLDER_RE.test(value)
-  )
-}
-
 // Ukraine, Belarus, Cyprus, Poland
 const restrictGeos = ['UA', 'BY', 'CY', 'PL']
 const DEFAULT_NAME = 'default'
 const defaultOptions = {
-  debug: false,
-  customGeo: 'US'
+  debug: false
 }
 
 const useLandingType = (
@@ -49,11 +28,11 @@ const useLandingType = (
   const searchParams = queryParser(window.location.search)
   const [landingType, setLandingType] = useState<string>('')
   const [flowType, setFlowType] = useState<string>('')
-  const { conf, geo } = useConf<Record<string, number>>('config', debug)
+  const noUtms = !checkUTMs(searchParams)
+  const { conf, geo } = useConf<Record<string, number>>('config', { debug, skip: noUtms })
+  const someGeo = geo || customGeo
   const redirectToDefault =
-    !checkUTMs(searchParams) ||
-    (geo && restrictGeos.includes(geo)) ||
-    (customGeo && restrictGeos.includes(customGeo))
+    noUtms || (someGeo && restrictGeos.includes(someGeo))
   const skip = redirectToDefault || searchParams?.skip_split === 'true'
 
   const getLimits = (arr: number[]): Limits =>

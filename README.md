@@ -11,6 +11,20 @@ This project is built using **TypeScript**, **React**, and **npm**. It provides 
 
 ## <div align="center">Usage</div>
 
+### <u>CLI</u>
+
+Two CLI commands are available to generate screens list from a pages config:
+
+- `generate-screens` — universal Node CLI. Works in Node projects out of the box.
+
+Examples:
+
+```
+npx @applyft-web/utils generate-screens -c src/pages.config.ts -o public/screens.json
+
+npx @applyft-web/utils generate-screens -c pages.config.json -o public
+```
+
 ### <u>Hooks</u>
 
 #### `useSplitFlow`
