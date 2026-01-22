@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useConf } from '../hooks'
+import { checkUTMs, queryParser } from '../utils'
 
 // TODO:
 // type ReturnType = string[] | null | undefined
@@ -9,14 +10,20 @@ interface Options {
   debug?: boolean
 }
 
+const defaultOptions = {
+  debug: false
+}
+
 export const useFlow = (
   flowType: string,
   flowsList: Record<string, string[]>,
-  options?: Options
+  options: Options = defaultOptions
 ): ReturnType => {
   const debug = options?.debug ?? false
   const [flow, setFlow] = useState<ReturnType>()
-  const { conf } = useConf<string[]>('flows', debug)
+  const searchParams = queryParser(window.location.search)
+  const noUtms = !checkUTMs(searchParams)
+  const { conf } = useConf<string[]>('flows', { debug, skip: noUtms })
 
   useEffect(() => {
     if (!flowType || conf === undefined) return

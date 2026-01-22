@@ -16,7 +16,10 @@ export const useConf = <T = string[] | Record<string, number>>(name: string, opt
   const [geo, setGeo] = useState<string | null>(null)
 
   useEffect(() => {
-    if (skip) return
+    if (skip) {
+      setConf(null)
+      return
+    }
 
     const handleError = (error: unknown): void => {
       if (debug) console.warn(`Unable to load the «${name}» config file`, error)
