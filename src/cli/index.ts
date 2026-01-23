@@ -1,3 +1,13 @@
+require('ts-node').register({
+  transpileOnly: true,
+  compilerOptions: {
+    jsx: 'react',
+    module: 'commonjs',
+    esModuleInterop: true
+  },
+  extensions: ['.ts', '.tsx']
+})
+
 import { hideBin } from 'yargs/helpers'
 import yargs from 'yargs'
 import { generateScreens } from './generate-screens'
