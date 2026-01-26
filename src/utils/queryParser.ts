@@ -12,12 +12,20 @@ export const queryParser = (str: string): Record<string, string> => {
   const raw = str.startsWith('?') ? str.slice(1) : str
   if (!raw) return {}
 
-  const coupleStr = raw.split('&').map(item => item.split('='))
+  return raw.split('&').reduce((acc, pair) => {
+    if (!pair) return acc
 
-  return coupleStr.reduce((acc, [key, value]) => {
-    return {
-      ...acc,
-      [safeDecode(key).replace(/[ +]/g, '_')]: safeDecode(value)
-    }
+    const eqIndex = pair.indexOf('=')
+    if (eqIndex === -1) return acc
+
+    const keyRaw = pair.slice(0, eqIndex)
+    const valueRaw = pair.slice(eqIndex + 1)
+
+    if (valueRaw === '') return acc
+
+    const key = safeDecode(keyRaw).replace(/[ +]/g, '_')
+    const value = safeDecode(valueRaw)
+
+    return { ...acc, [key]: value }
   }, {})
 }
