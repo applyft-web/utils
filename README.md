@@ -11,28 +11,34 @@ This project is built using **TypeScript**, **React**, and **npm**. It provides 
 
 ## <div align="center">Usage</div>
 
+### <u>CLI</u>
+
+Two CLI commands are available to generate screens list from a pages config:
+
+- `generate-screens` — universal Node CLI. Works in Node projects out of the box.
+
+Examples:
+
+```
+npx @applyft-web/utils generate-screens -c src/pages.config.ts -o public/screens.json
+
+npx @applyft-web/utils generate-screens -c pages.config.json -o public
+```
+
 ### <u>Hooks</u>
 
-#### `useLandingType`
-Determines the landing type, paywall type, and flow type based on configuration and randomization.
+#### `useSplitFlow`
+Determines the landing type and flow type based on configuration and randomization.
 
 **Parameters**:
-- `landingParam` (string): The initial landing parameter.
-- `landingTypesList` (string[]): A list of valid landing types.
-- `defaultValue` (string): The default landing type.
+- `landingParam` (string): The initial landing parameter from pathname.
+- `options` (object): Additional settings for splitting. For example, Optional.
 
 **Returns**:
-- `{ landingType, paywallType, flowType }`
+- `{ landingType, flowType }`
 
 #### `useLandingTypeV2`
-A wrapper for `useLandingType` with a default flow name of `'default'`.
-
-**Parameters**:
-- `landingParam` (string): The initial landing parameter.
-- `landingTypesList` (string[]): A list of valid landing types.
-
-**Returns**:
-- `{ landingType, paywallType, flowType }`
+Deprecated.
 
 #### `useFlow`
 Retrieves and manages a flow configuration based on the flow type.
